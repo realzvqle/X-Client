@@ -106,7 +106,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             first_id = draw_button(hwnd, 10, 10, 100, 50, L"Debug1");
             second_id = draw_button(hwnd, 10, 120, 100, 50, L"Debug2");
             draw_text(dc, 900, 900, L"X Build (IDK DUDE)", RGB(255, 255, 255));
-            draw_text(dc, 900, 90, L"Hello Nick Fuentes!", RGB(255, 255, 255));
+            draw_text(dc, 900, 90, L"Hello Elon Musk", RGB(255, 255, 255));
             break;
 
         }
