@@ -120,30 +120,30 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="draw.c" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="tools.c" />
+    <ClCompile Include="src\draw\draw.c" />
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\tools.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="draw.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
-    <ClInclude Include="resource2.h" />
-    <ClInclude Include="resource3.h" />
-    <ClInclude Include="tools.h" />
+    <ClInclude Include="src\draw\draw.h" />
+    <ClInclude Include="res\resource.h" />
+    <ClInclude Include="res\resource1.h" />
+    <ClInclude Include="res\resource2.h" />
+    <ClInclude Include="res\resource3.h" />
+    <ClInclude Include="src\tools.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Client.rc" />
+    <ResourceCompile Include="res\Client.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Xicon.ico" />
+    <Image Include="res\Xicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

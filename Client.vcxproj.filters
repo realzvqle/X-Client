@@ -18,20 +18,14 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="draw.c">
+    <ClCompile Include="src\draw.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tools.c">
+    <ClCompile Include="src\tools.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="draw.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tools.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,6 +36,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
