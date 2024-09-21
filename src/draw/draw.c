@@ -1,10 +1,9 @@
 #include "draw.h"
-
+#include "../font.h"
 
 
 
 static INT current_id = 0;
-extern HFONT hFont;
 
 VOID draw_background(HDC dc, PPAINTSTRUCT ps, HWND hwnd, COLORREF color) {
     HBRUSH brush = CreateSolidBrush(color);
@@ -32,15 +31,32 @@ INT draw_button(HWND hwnd, float x, float y, float width, float height, WCHAR* t
     HWND hButton = CreateWindowW(L"BUTTON", text, WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
         x, y, width, height,
         hwnd, current_id, (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE), NULL);
+    HANDLE hFont = create_standard_font(12);
+    if (!hFont) {
+        ShowFormattedMessageBox(GetLastError());
+    }
     SendMessage(hButton, WM_SETFONT, (WPARAM)hFont, TRUE);
+    if (hFont) {
+        DeleteObject(hFont);
+    }
     return current_id;
 }
 
-VOID draw_text(HDC dc, float x, float y, WCHAR* text, COLORREF color) {
+VOID draw_text(HDC dc, float x, float y,int size,  WCHAR* text, COLORREF color) {
     SetTextColor(dc, color);
     SetBkMode(dc, TRANSPARENT);
-    SelectObject(dc, hFont);
-    TextOut(dc, x, y, text, lstrlen(text));
+    HANDLE hFont = create_standard_font(size);
+    if (hFont) {
+        SelectObject(dc, hFont);
+        TextOut(dc, x, y, text, lstrlen(text));
+        DeleteObject(hFont);
+    }
+    else {
+        ShowFormattedMessageBox(GetLastError());
+
+    }
 }
+
+
 
 

@@ -13,30 +13,12 @@ VOID OnSize(HWND hwnd, UINT wParam, int width, int height) {
 int center_x;
 int center_y;
 
-HFONT CreateStandardFont() {
-    return CreateFontW(
-        -MulDiv(12, GetDeviceCaps(GetDC(NULL), LOGPIXELSY), 72), 
-        0,                          
-        0,                         
-        0,                         
-        FW_NORMAL,                
-        FALSE,                     
-        FALSE,                     
-        FALSE,                     
-        DEFAULT_CHARSET,          
-        OUT_DEFAULT_PRECIS,       
-        CLIP_DEFAULT_PRECIS,     
-        DEFAULT_QUALITY,          
-        DEFAULT_PITCH | FF_DONTCARE,     
-        L"Arial"                   
-    );
-}
+
 
 
 SHORT state = 0;
 static int first_id;
 static int second_id;
-HFONT hFont;
 HBITMAP hBitmap;  
 
 
@@ -49,20 +31,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
         case 0:
 
-        {
-            hFont = CreateStandardFont(); 
-            if (!hFont) {
-                ShowFormattedMessageBox(GetLastError());
-                DestroyWindow(hwnd);
-            }
-            SendMessage(hwnd, WM_SETFONT, (WPARAM)hFont, TRUE);
+        { 
             hBitmap = (HBITMAP)LoadImageW(NULL, L"resources\\xicon.bmp", IMAGE_BITMAP, 200, 200, LR_LOADFROMFILE);
             if (hBitmap == NULL) {
                 ShowFormattedMessageBox(GetLastError());
                 DestroyWindow(hwnd);
+
             }
             return 0;
-
         }
         case 1:
         {
@@ -70,6 +46,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             break;
         }
         }
+        break;
           
     }
     case WM_COMMAND:
@@ -78,13 +55,24 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         case 1:
         {
             if (LOWORD(wParam) == first_id) {
-                MessageBox(hwnd, L"Button clicked!", L"Info", MB_OK);
+                state = 2;
+                RedrawWindow(hwnd, NULL, NULL, RDW_ERASE | RDW_VALIDATE | RDW_UPDATENOW);
+                InvalidateRect(hwnd, NULL, 0);
+                UpdateWindow(hwnd);
+                HWND button = GetDlgItem(hwnd, first_id);
+                if (button) {
+                    DestroyWindow(button);
+                }
+                if (hBitmap) {
+                    DeleteObject(hBitmap);
+                }
+                break;
+
             }
-            if (LOWORD(wParam) == second_id) {
-                MessageBox(hwnd, L"Button clicked!", L"No", MB_OK);
-            }
+            
         }
         }
+        break;
         
     }
     case WM_SIZE:
@@ -92,7 +80,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         int width = LOWORD(lParam);
         int height = HIWORD(lParam);
         OnSize(hwnd, (UINT)wParam, width, height);
-        return 0; 
+        break;
     }
     break;
     case WM_CLOSE:
@@ -102,18 +90,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             DestroyWindow(hwnd);
             break;
         }
-        return 0;
+        break;
+        
     }
     case WM_DESTROY:
     {
         if (hBitmap) {
             DeleteObject(hBitmap);
         }
-        if (hFont) {
-            DeleteObject(hFont);
-        }
         PostQuitMessage(0);
-        return 0;
         break;
     }
     case WM_PAINT:
@@ -134,13 +119,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
                 center_y -= bitmap.bmHeight / 2;
                 draw_image(dc, hBitmap, center_x, center_y);
             }
+            //MessageBoxW(hwnd, "Hi C Lads", "Hello!", MB_OK);
             Sleep(1000);
             state = 1;
             draw_background(dc, &ps, hwnd, RGB(0, 0, 0));
             if (hBitmap) {
                 DeleteObject(hBitmap);
             }
-            hBitmap = (HBITMAP)LoadImageW(NULL, L"resources\\xicon.bmp", IMAGE_BITMAP, 50, 50, LR_LOADFROMFILE);
+            hBitmap = (HBITMAP)LoadImageW(NULL, L"resources\\xicon-gray.bmp", IMAGE_BITMAP, 800, 800, LR_LOADFROMFILE);
             if (!hBitmap) {
                 ShowFormattedMessageBox(GetLastError());
                 DestroyWindow(hwnd);
@@ -149,13 +135,27 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             // switch overflow on purpose
         }
         case 1:
-            first_id = draw_button(hwnd, 120, 10, 100, 50, L"Debug1");
-            second_id = draw_button(hwnd, 120, 120, 100, 50, L"Debug2");
-            draw_text(dc, 900, 900, L"X Build (IDK DUDE)", RGB(255, 255, 255));
-            draw_text(dc, 900, 90, L"Hello Elon Musk", RGB(255, 255, 255));
-            draw_image(dc, hBitmap, 0, center_x);
+        {
+
+
+            SIZE textSize;
+            GetTextExtentPoint32(dc, L"Login to X Client", lstrlen(L"Login to X Client"), &textSize);
+
+            int x = (ps.rcPaint.left + ps.rcPaint.right) / 2 - (textSize.cx / 2);
+            int y = (ps.rcPaint.top + ps.rcPaint.bottom) / 2 - (textSize.cy / 2);
+            draw_text(dc, x - 20, y - 20, 20, L"Login to X client", RGB(255, 255, 255));
+            first_id = draw_button(hwnd, x, y + 100, 140, 40, L"Login");
+            draw_image(dc, hBitmap, -300, -200);
 
             break;
+        }
+        case 2:
+        {
+            draw_background(dc, &ps, hwnd, RGB(0, 0, 0));
+            InvalidateRect(hwnd, NULL, 0);
+            draw_text(dc,20, 20, 20, L"You're Logged In", RGB(255, 255, 255));
+            break;
+        }
 
         }
 

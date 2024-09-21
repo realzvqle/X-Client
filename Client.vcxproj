@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\font.c" />
     <ClCompile Include="src\draw\draw.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\tools.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\font.h" />
     <ClInclude Include="src\draw\draw.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="res\resource1.h" />
